@@ -8,6 +8,12 @@ Python process to ingest data into Neo4j database and find answers for following
 3) Are there any rid nodes with multiple cid nodes? If so, what percent?
 
 
+# THINGS TO CONSIDER
+
+- Relationship between order/customer and request/customer is considered as ordered and by, since no other attributes are available to differentiate the relation
+- Edges will change depending on the uniqueness of relationship
+
+
 ## Requirements:
     -Neo4j
     -Python3
@@ -22,6 +28,11 @@ Python process to ingest data into Neo4j database and find answers for following
 
 ## To Run:
     python3 ./process_neo_4j_ingest/main.py
+
+## PLAN
+
+![PLAN](./process_neo4j_ingest/resources/plan.jng)
+    
     
 ## SAMPLE
 ![SAMPLE](./process_neo4j_ingest/resources/sample.png)
@@ -36,7 +47,7 @@ OPTIONAL MATCH (request)-[relation:by]->(contact) WHERE relation is null RETURN 
 |TOTAL|
 |-----|
 | 0   |
-|-----|
+|     |
 
 2) How many cid nodes have more than one edge to an oid node?
 
@@ -47,7 +58,7 @@ MATCH (contact)-[r:ordered]->(order) WITH contact, count(r) as rel_cnt WHERE rel
 |TOTAL|
 |-----|
 |1197 |
-|-----|
+|     |
 
 
 
@@ -60,4 +71,18 @@ MATCH (contact)<-[k:by]-(request) with count(distinct request) as total MATCH (c
 |PERCENTAGE|
 |----------|
 |  3.75    |
-|----------|
+|          |
+
+
+
+
+
+Contribute and Grow
+-------------------
+1. Fork your repo
+2. Contribute and raise PR
+3. Let other review
+
+|========================|
+|       Team 3S          | 
+|========================|
