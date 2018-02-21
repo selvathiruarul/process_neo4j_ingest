@@ -2,6 +2,7 @@ language: python
 python:
 - '3.5.2'
 install:
-- ls -al
-- pip install .
-- pip install -r requirements.txt
+  - pip install .
+  - pip install -r requirements.txt
+script:
+  - pytest
