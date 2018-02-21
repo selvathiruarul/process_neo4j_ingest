@@ -8,10 +8,10 @@
 
 from neo4j_connect import Neo4j_Connect
 
-import argparse
 import os
 import logging
 import configparser
+from neo4j import exceptions
 
 log_format = "%(funcName)s():%(lineno)i: %(message)s %(levelname)s"
 
@@ -35,19 +35,27 @@ def read_query(file_name):
     :param file_name: 
     :return: 
     """
-    with open(file_name) as file_object:
-        queries = file_object.readlines()
-    for query in queries:
-        yield query.strip()
 
+    if os.path.exists(file_name) and os.path.isfile(file_name):
+        with open(file_name) as file_object:
+            queries = file_object.readlines()
+            for query in queries:
+                yield query.strip()
+    else:
+        raise FileNotFoundError
 
 def get_connection():
     """
     Method to acquire db connection
     :return: 
     """
-    neo4j_connector = Neo4j_Connect(URI, USERNAME, PASSWORD)
-    return neo4j_connector
+    try:
+        neo4j_connector = Neo4j_Connect(URI, USERNAME, PASSWORD)
+        return neo4j_connector
+    except exceptions.AuthError as exception:
+        log.exception(exception)
+    except exceptions.AddressError as exception:
+        log.exception(exception)
 
 
 def load_data(file_name):
@@ -56,15 +64,24 @@ def load_data(file_name):
     :param file_name: 
     :return: 
     """
-    neo4j_connector = get_connection()
-    neo4j_driver = neo4j_connector.get_drive()
-    with neo4j_driver.session() as session:
-        for query in read_query(file_name):
-            log.info("Executing.. {query}".format(query=query))
-            result = session.run(query)
-            log.info("Completed {status}".format(status=result))
-    neo4j_connector.close()
+    try:
+        neo4j_connector = get_connection()
+        if neo4j_connector:
+            neo4j_driver = neo4j_connector.get_drive()
+            with neo4j_driver.session() as session:
 
+                for query in read_query(file_name):
+                    log.info("Executing.. {query}".format(query=query))
+                    result = session.run(query)
+                    log.info("Completed {status}".format(status=result))
 
+                log.exception("File Not Found")
+            neo4j_connector.close()
+    except exceptions.CypherError as exception:
+        log.exception(exception)
+        exit(1)
+    except FileNotFoundError as exception:
+        log.exception(exception)
+        exit(1)
 if __name__ == '__main__':
-    load_data(os.path.join(BASE_DIR, FILE_NAME))
+    load_data(os.path.join(BASE_DIR, ''))

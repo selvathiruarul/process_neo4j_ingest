@@ -3,3 +3,5 @@
 /process_neo4j_ingest.iml
 process_neo4j_ingest/__pycache__/
 process_neo4j_ingest/neo4j_connect.pyc
+/.cache/
+tests/__pycache__/
