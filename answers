@@ -13,12 +13,12 @@ OPTIONAL MATCH (request)-[relation:by]->(contact) WHERE relation is null RETURN 
 2) How many cid nodes have more than one edge to an oid node?
 
 
-MATCH (contact)-[r:ordered]->(order) WITH contact, count(r) as rel_cnt WHERE rel_cnt > 1 RETURN count(contact) as total
+MATCH (contact)-[r:ordered]->(order) WITH contact, order,count(r) as rel_cnt WHERE rel_cnt > 1 RETURN count(DISTINCT contact) as total
 
 
 |TOTAL|
 |-----|
-|1197 |
+| 795 |
 |     |
 
 
