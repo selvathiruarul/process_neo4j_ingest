@@ -1,6 +1,6 @@
-#proces_neo4j_ingest
+# proces_neo4j_ingest
 
-##Description
+## Description
 Python process to ingest data into Neo4j database and find answers for following questions
 
 1) How many rid nodes are there with no edges?
@@ -8,7 +8,7 @@ Python process to ingest data into Neo4j database and find answers for following
 3) Are there any rid nodes with multiple cid nodes? If so, what percent?
 
 
-##Requirements:
+## Requirements:
     -Neo4j
     -Python3
     -neo4j.v1
@@ -18,7 +18,7 @@ Python process to ingest data into Neo4j database and find answers for following
         -neo4j_username=
 
 
-##To Run:
+## To Run:
     python3 ./process_neo_4j_ingest/main.py
     
 
