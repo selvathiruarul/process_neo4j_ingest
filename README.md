@@ -24,7 +24,7 @@ Python process to ingest data into Neo4j database and find answers for following
     -neo4j_username=
 
 ## pyest
-    -pytest
+    pytest
 
 ## To Run:
     python3 ./process_neo_4j_ingest/main.py
