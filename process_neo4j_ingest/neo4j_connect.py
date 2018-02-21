@@ -15,7 +15,15 @@ class Neo4j_Connect(object):
         self._driver = GraphDatabase.driver(uri, auth=(user, password))
 
     def close(self):
+        """
+        Method to close db connection
+        :return: 
+        """
         self._driver.close()
 
     def get_drive(self):
+        """
+        Mwthod to get db driver
+        :return: 
+        """
         return self._driver

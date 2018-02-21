@@ -1,0 +1,2 @@
+USING PERIODIC COMMIT 500 LOAD CSV WITH HEADERS FROM 'https://s3-us-west-2.amazonaws.com/clear-selva/moc.data' as line FIELDTERMINATOR '\t' MERGE (contact:contact {id:line.cid,type:'Contact'}) MERGE (order:order {id:line.oid,type:'Order'}) CREATE (order)<-[ordered:ordered]-(contact)
+USING PERIODIC COMMIT 500 LOAD CSV WITH HEADERS FROM 'https://s3-us-west-2.amazonaws.com/clear-selva/mvc.data' as line FIELDTERMINATOR '\t' MERGE (request:request {id:line.rid,type:'Request'}) MERGE (contact:contact {id :line.cid,type:'Contact'}) CREATE (request)-[:by]->(contact)

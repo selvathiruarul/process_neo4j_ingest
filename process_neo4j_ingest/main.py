@@ -6,18 +6,65 @@
    Created by selva on 2/19/18.
 """
 
+from neo4j_connect import Neo4j_Connect
 
-from process_neo4j_ingest import neo4j_connect
+import argparse
+import os
+import logging
+import configparser
 
-URI='bolt://im-interview-test-p3jd74h.clearlinkdata.com:7687'
-USERNAME='neo4j'
-PASSWORD="UT5p&>'`t4"
+log_format = "%(funcName)s():%(lineno)i: %(message)s %(levelname)s"
 
-neo4j_object=neo4j_connect.Neo4j_Connect(URI, USERNAME, PASSWORD)
+logging.basicConfig(level=logging.INFO, format=log_format)
+log = logging.getLogger(__name__)
 
-neo4j_driver=neo4j_object.get_drive()
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+config = configparser.RawConfigParser()
+config.read(os.path.join(BASE_DIR, 'resources/properties.ini'))
+properties = dict(config.items('process_neo4j_ingest'))
 
-query="USING PERIODIC COMMIT 500 LOAD CSV WITH HEADERS FROM 'file:/home/selva/IdeaProjects/process_neo4j_ingest/process_neo4j_ingest/resources/moc.data' as line FIELDTERMINATOR '\t' MERGE (cid:cid {id:line.oid}) MERGE (oid:oid {id :line.cid}) MERGE (oid)<-[:related]-(cid)"
+URI = properties['uri']
+FILE_NAME = properties['file_name']
+USERNAME = properties['neo4j_username']
+PASSWORD = os.environ.get('NEO4J_PASSWORD')
 
-with neo4j_driver.session() as session:
-    session.run(query)
+
+def read_query(file_name):
+    """
+    Method to read the query file
+    :param file_name: 
+    :return: 
+    """
+    with open(file_name) as file_object:
+        queries = file_object.readlines()
+    for query in queries:
+        yield query.strip()
+
+
+def get_connection():
+    """
+    Method to acquire db connection
+    :return: 
+    """
+    neo4j_connector = Neo4j_Connect(URI, USERNAME, PASSWORD)
+    return neo4j_connector
+
+
+def load_data(file_name):
+    """
+    Method to load data into db
+    :param file_name: 
+    :return: 
+    """
+    neo4j_connector = get_connection()
+    neo4j_driver = neo4j_connector.get_drive()
+    with neo4j_driver.session() as session:
+        for query in read_query(file_name):
+            log.info("Executing.. {query}".format(query=query))
+            result = session.run(query)
+            log.info("Completed {status}".format(status=result))
+    neo4j_connector.close()
+
+
+if __name__ == '__main__':
+    load_data(os.path.join(BASE_DIR, FILE_NAME))
