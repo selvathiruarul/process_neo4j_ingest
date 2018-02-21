@@ -1,4 +1,4 @@
-# proces_neo4j_ingest
+# proces_neo4j_ingest [![Build Status](https://travis-ci.org/selvathiruarul/process_twitter_visualize.svg?branch=master)](https://travis-ci.org/selvathiruarul/process_neo4j_ingest)
 
 ## Description
 Python process to ingest data into Neo4j database and find answers for following questions
@@ -12,10 +12,10 @@ Python process to ingest data into Neo4j database and find answers for following
     -Neo4j
     -Python3
     -neo4j.v1
-    ###Set Environment variables
-        -file_name = 
-        -uri = 
-        -neo4j_username=
+## Set Environment variables
+    -file_name = 
+    -uri = 
+    -neo4j_username=
 
 
 ## To Run:
