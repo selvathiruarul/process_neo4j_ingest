@@ -84,4 +84,4 @@ def load_data(file_name):
         log.exception(exception)
         exit(1)
 if __name__ == '__main__':
-    load_data(os.path.join(BASE_DIR, ''))
+    load_data(os.path.join(BASE_DIR, FILE_NAME))

@@ -17,9 +17,14 @@ Python process to ingest data into Neo4j database and find answers for following
     -uri = 
     -neo4j_username=
 
+## pyest
+    -pytest
 
 ## To Run:
     python3 ./process_neo_4j_ingest/main.py
+    
+    
+![SAMPLE](./process_neo4j_ingest/resources/sample.png)
     
 
 
