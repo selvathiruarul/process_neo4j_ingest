@@ -31,7 +31,7 @@ Python process to ingest data into Neo4j database and find answers for following
 
 ## PLAN
 
-![PLAN](./process_neo4j_ingest/resources/plan.jng)
+![PLAN](./process_neo4j_ingest/resources/plan.jpg)
     
     
 ## SAMPLE
